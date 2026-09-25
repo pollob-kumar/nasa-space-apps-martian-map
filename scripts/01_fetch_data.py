@@ -1,18 +1,45 @@
-"""Download raw products for a site into data/raw/. SKELETON - fill in real URLs from docs/DATA_SOURCES.md (task T-010).
+"""Download raw products for a site into data/raw/.
 
-Do NOT commit raw files. Record every download (URL, date, checksum) in data/raw/SOURCES.log.
+Implements T-010. One function per source.
+If a source isn't verified yet (see docs/DATA_SOURCES.md), raises NotImplementedError.
 """
 import argparse
+from pathlib import Path
 from common import RAW, SITES
 
+def fetch_dem(site: str, out_dir: Path) -> None:
+    raise NotImplementedError("DEM source not yet verified (see docs/DATA_SOURCES.md).")
+
+def fetch_imagery(site: str, out_dir: Path) -> None:
+    raise NotImplementedError("CTX/HiRISE imagery source not yet verified (see docs/DATA_SOURCES.md).")
+
+def fetch_mineralogy(site: str, out_dir: Path) -> None:
+    raise NotImplementedError("CRISM mineralogy source not yet verified (see docs/DATA_SOURCES.md).")
+
+def fetch_thermal_inertia(site: str, out_dir: Path) -> None:
+    raise NotImplementedError("THEMIS thermal inertia source not yet verified (see docs/DATA_SOURCES.md).")
+
+def fetch_traverse(site: str, out_dir: Path) -> None:
+    raise NotImplementedError("Mars 2020 traverse source not yet verified (see docs/DATA_SOURCES.md).")
+
+def fetch_conditions(site: str, out_dir: Path) -> None:
+    raise NotImplementedError("MEDA conditions snapshot source not yet verified (see docs/DATA_SOURCES.md).")
+
 def main() -> None:
-    ap = argparse.ArgumentParser()
+    ap = argparse.ArgumentParser(description="Download raw products for a site.")
     ap.add_argument("--site", required=True, choices=SITES)
     args = ap.parse_args()
-    RAW.mkdir(parents=True, exist_ok=True)
-    # TODO(T-010): download DEM (MOLA/HRSC blend or CTX/HiRISE DTM), CRISM mineral maps, THEMIS thermal inertia,
-    #              rover traverse, MEDA/REMS tables. One function per product; log URL + checksum.
-    raise NotImplementedError("Add verified source URLs first (docs/DATA_SOURCES.md).")
+    
+    out_dir = RAW / args.site
+    out_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Run fetchers. They will raise NotImplementedError until sources are verified.
+    fetch_dem(args.site, out_dir)
+    fetch_imagery(args.site, out_dir)
+    fetch_mineralogy(args.site, out_dir)
+    fetch_thermal_inertia(args.site, out_dir)
+    fetch_traverse(args.site, out_dir)
+    fetch_conditions(args.site, out_dir)
 
 if __name__ == "__main__":
     main()

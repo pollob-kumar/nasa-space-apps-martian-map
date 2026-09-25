@@ -3,6 +3,7 @@
 Dates: today ~ Sep 25, 2026; hackathon **Nov 14-15, 2026** (verify). Work top-down; one task at a time; tick here and note deviations in DECISIONS.md. IDs match SRS where relevant.
 
 ## Phase 0 - Decisions and verification (week 1)
+
 - [ ] T-000 Team confirms ADR-001 scope and roles; register team on the Space Apps site (max 6)
 - [x] T-001 **Verify every data source**: open each URL in `DATA_SOURCES.md`, confirm licence/CORS/tile template; set `verified` flags; fill `VITE_TILE_*`. Includes the Mars Trek candidate in DATA_SOURCES section 7 (does it still serve tiles? is `tms:false` right? which layer does it belong to?)
 - [x] T-002 Verify site coordinates/bbox against official gazetteer; confirmed the Jezero/Gale centre + bbox values are consistent with the official NASA mission-site context; no config change required
@@ -10,7 +11,8 @@ Dates: today ~ Sep 25, 2026; hackathon **Nov 14-15, 2026** (verify). Work top-do
 - [ ] T-004 `npm install && npm run dev` works for every teammate; CI green
 
 ## Phase 1 - Data pipeline (weeks 2-3)
-- [ ] T-010 Implement `01_fetch_data.py` for DEM, imagery/tiles, CRISM, THEMIS, traverse, MEDA
+
+- [x] T-010 Implement `01_fetch_data.py` for DEM, imagery/tiles, CRISM, THEMIS, traverse, MEDA
 - [ ] T-011 `02_make_dem_grid.py` on real DEM -> `dem.json` (with provenance)
 - [ ] T-012 Slope grid (match TS `slopeDegrees`; cross-check test)
 - [ ] T-013 Roughness + thermal-inertia sand risk
@@ -21,11 +23,12 @@ Dates: today ~ Sep 25, 2026; hackathon **Nov 14-15, 2026** (verify). Work top-do
 - [ ] T-018 Record each raw source file's version/fetch date + sha256 hash (e.g. `data/raw/{site}/SOURCES_LOCK.json`); copy into `sourceHash`/`fetchedAt` on the matching `Provenance` (NFR-05, ADR-017)
 
 ## Phase 2 - Core app (weeks 3-5)
+
 - [ ] T-020 Basemap + elevation tiles render, **including the pan/zoom scale bar (done) and a lon/lat hover readout (not yet built)** (FR-01)
 - [ ] T-021 Layer panel complete incl. legends (FR-02)
 - [ ] T-022 GeoJSON layers styled: traverse, targets, mineralogy (FR-03)
 - [ ] T-023 Grid layers (slope, hazard) rendered as canvas overlay
-- [ ] T-024 Integrated target panel: elevation/slope/mineral/rover/provenance (FR-06). *Scaffold exists (`features/inspector`, ADR-015): elevation, slope, nearest target, nearest traverse point for any clicked point. Still to do: run on real data files, mineralogy + terrain-unit lookup (point-in-polygon), show the DEM's own provenance, make selecting a target on the map set `selectedTargetId`.*
+- [ ] T-024 Integrated target panel: elevation/slope/mineral/rover/provenance (FR-06). _Scaffold exists (`features/inspector`, ADR-015): elevation, slope, nearest target, nearest traverse point for any clicked point. Still to do: run on real data files, mineralogy + terrain-unit lookup (point-in-polygon), show the DEM's own provenance, make selecting a target on the map set `selectedTargetId`._
 - [ ] T-025 Route UI: pick start/destination(s) on map (FR-04)
 - [ ] T-026 Route stats + elevation profile chart (FR-05)
 - [ ] T-027 Conditions panel on real snapshot (FR-07)
@@ -33,6 +36,7 @@ Dates: today ~ Sep 25, 2026; hackathon **Nov 14-15, 2026** (verify). Work top-do
 - [ ] T-029 Export plan JSON + print view (FR-12)
 
 ## Phase 3 - 3D and polish (weeks 5-6)
+
 - [ ] T-030 3D terrain from real DEM; route line synced (FR-09)
 - [ ] T-031 Astronaut avatar walk, camera follow; optional GLB (FR-09/15)
 - [ ] T-032 Guided 3-minute demo tour (FR-11)
@@ -40,6 +44,7 @@ Dates: today ~ Sep 25, 2026; hackathon **Nov 14-15, 2026** (verify). Work top-do
 - [ ] T-034 Empty/error states verified with data removed (NFR-04)
 
 ## Phase 4 - Hardening
+
 - [ ] T-040 Replace placeholder hazard/science inputs in `RoutePanel` with real layers
 - [ ] T-041 Move A* to `routing.worker.ts` if > 2 s (NFR-01)
 - [ ] T-042 Tests: cost model, plan budget, loaders, provenance validator
@@ -50,6 +55,7 @@ Dates: today ~ Sep 25, 2026; hackathon **Nov 14-15, 2026** (verify). Work top-do
 - [ ] T-051 (Could) route comparison FR-13; (Could) AI explainer FR-14
 
 ## Phase 5 - Submission (Nov 1-15)
+
 - [ ] T-060 Deploy static build; test on projector resolution
 - [ ] T-061 Complete `SUBMISSION_CHECKLIST.md`; record demo/video if required
 - [ ] T-062 Freeze features 48 h before; only bug fixes
