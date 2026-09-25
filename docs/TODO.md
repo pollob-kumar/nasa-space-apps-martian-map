@@ -8,7 +8,7 @@ Dates: today ~ Sep 25, 2026; hackathon **Nov 14-15, 2026** (verify). Work top-do
 - [x] T-001 **Verify every data source**: open each URL in `DATA_SOURCES.md`, confirm licence/CORS/tile template; set `verified` flags; fill `VITE_TILE_*`. Includes the Mars Trek candidate in DATA_SOURCES section 7 (does it still serve tiles? is `tms:false` right? which layer does it belong to?)
 - [x] T-002 Verify site coordinates/bbox against official gazetteer; confirmed the Jezero/Gale centre + bbox values are consistent with the official NASA mission-site context; no config change required
 - [x] T-003 Read the official challenge Details/Resources/Submission tabs; paste extras into `CHALLENGE_ANALYSIS.md`
-- [ ] T-004 `npm install && npm run dev` works for every teammate; CI green
+- [x] T-004 `npm ci && npm run dev` works for every teammate; CI green
 
 ## Phase 1 - Data pipeline (weeks 2-3)
 
