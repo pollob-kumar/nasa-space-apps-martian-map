@@ -15,8 +15,8 @@ Dates: today ~ Sep 25, 2026; hackathon **Nov 14-15, 2026** (verify). Work top-do
 - [x] T-010 Implement `01_fetch_data.py` for DEM, imagery/tiles, CRISM, THEMIS, traverse, MEDA
 - [x] T-011 `02_make_dem_grid.py` on real DEM -> `dem.json` (with provenance)
 - [x] T-012 Slope grid (match TS `slopeDegrees`; cross-check test)
-- [ ] T-013 Roughness + thermal-inertia sand risk
-- [ ] T-014 Hazard grid with documented weights
+- [x] T-013 Roughness + thermal-inertia sand risk
+- [x] T-014 Hazard grid with documented weights
 - [ ] T-015 `04_build_manifest.py` + validation (provenance present, bbox valid)
 - [ ] T-016 Curate 3-5 science targets from real CRISM/geology info with rationale + sources
 - [ ] T-017 Conditions snapshot from MEDA (or REMS) with timestamp

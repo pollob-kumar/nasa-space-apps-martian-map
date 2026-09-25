@@ -53,6 +53,35 @@ def slope_degrees(elev_data: np.ndarray, bbox: dict) -> np.ndarray:
     
     return out
 
+def roughness_variance(elev_data: np.ndarray) -> np.ndarray:
+    """
+    Calculate local elevation variance (roughness) using a 3x3 window.
+    elev_data: 2D numpy array
+    """
+    padded = np.pad(elev_data, pad_width=1, mode='edge')
+    windows = np.lib.stride_tricks.sliding_window_view(padded, (3, 3))
+    variance = np.var(windows, axis=(2, 3))
+    return variance
+
+def compute_hazard(slope_data: np.ndarray, roughness_data: np.ndarray, sand_risk_data: np.ndarray) -> np.ndarray:
+    """Compute hazard grid based on SDD model and accepted ADR thresholds."""
+    # Weights
+    w_slope = 0.4
+    w_roughness = 0.4
+    w_sand = 0.2
+    
+    # Normalise slope (max 20 degrees based on assumptions)
+    slope_norm = np.clip(slope_data / 20.0, 0, 1)
+    
+    # Normalise roughness (max risk at variance >= 0.5 m^2)
+    roughness_norm = np.clip(roughness_data / 0.5, 0, 1)
+    
+    # Sand risk is already 0..1
+    sand_norm = np.clip(sand_risk_data, 0, 1)
+    
+    hazard = w_slope * slope_norm + w_roughness * roughness_norm + w_sand * sand_norm
+    return np.clip(hazard, 0, 1)
+
 def process_site(site_id: str) -> None:
     site_dir = PUBLIC_DATA / site_id
     dem_path = site_dir / "dem.json"
@@ -72,27 +101,41 @@ def process_site(site_id: str) -> None:
     # Calculate slope
     slope_data = slope_degrees(elev_data, dem["bbox"])
     
-    # Write slope.json
-    out = {
-        "schemaVersion": 1,
-        "width": dem["width"],
-        "height": dem["height"],
-        "bbox": dem["bbox"],
-        "encoding": "float32-base64",
-        "unit": "deg",
-        "data": base64.b64encode(slope_data.astype("<f4").tobytes()).decode("ascii"),
-        "provenance": {
-            "sourceFile": "dem.json",
-            "processed": True,
-            "synthetic": False,
-            "verified": True,
-            "note": "Derived from DEM via central differences (T-012)"
-        }
-    }
+    # Calculate roughness (T-013)
+    roughness_data = roughness_variance(elev_data)
     
-    out_path = site_dir / "slope.json"
-    out_path.write_text(json.dumps(out))
-    print(f"Wrote {out_path} ({out_path.stat().st_size} bytes)")
+    # Calculate sand risk (synthetic placeholder as THEMIS data is missing) (T-013)
+    sand_risk_data = np.zeros_like(elev_data, dtype=np.float32)
+    
+    # Calculate hazard (T-014)
+    hazard_data = compute_hazard(slope_data, roughness_data, sand_risk_data)
+    
+    def write_grid(name, data, unit, note, synthetic=False):
+        out = {
+            "schemaVersion": 1,
+            "width": dem["width"],
+            "height": dem["height"],
+            "bbox": dem["bbox"],
+            "encoding": "float32-base64",
+            "unit": unit,
+            "data": base64.b64encode(data.astype("<f4").tobytes()).decode("ascii"),
+            "provenance": {
+                "sourceFile": "dem.json",
+                "processed": True,
+                "synthetic": synthetic,
+                "verified": not synthetic,
+                "note": note
+            }
+        }
+        out_path = site_dir / f"{name}.json"
+        out_path.write_text(json.dumps(out))
+        print(f"Wrote {out_path} ({out_path.stat().st_size} bytes)")
+
+    # Write all grids
+    write_grid("slope", slope_data, "deg", "Derived from DEM via central differences (T-012)")
+    write_grid("roughness", roughness_data, "m^2", "3x3 local elevation variance (T-013)")
+    write_grid("sand_risk", sand_risk_data, "score", "Placeholder synthetic data (THEMIS TI missing) (T-013)", synthetic=True)
+    write_grid("hazard", hazard_data, "score", "Hazard model: 0.4*(slope/20) + 0.4*(roughness/0.5) + 0.2*sand_risk (T-014)", synthetic=True)
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Derive terrain layers from DEM.")
