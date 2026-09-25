@@ -1,10 +1,78 @@
 {
   "schemaVersion": 1,
-  "generatedBy": null,
+  "generatedBy": "scripts/04_build_manifest.py",
   "sites": [
     {
       "id": "jezero-delta",
-      "assets": { "dem": null, "slope": null, "traverse": null, "targets": null, "conditions": null }
+      "assets": {
+        "dem": "jezero-delta/dem.json",
+        "slope": "jezero-delta/slope.json",
+        "roughness": "jezero-delta/roughness.json",
+        "sand_risk": "jezero-delta/sand_risk.json",
+        "hazard": "jezero-delta/hazard.json",
+        "traverse": null,
+        "targets": null,
+        "conditions": null
+      },
+      "files": [
+        {
+          "path": "jezero-delta/dem.json",
+          "schemaVersion": 1,
+          "provenance": {
+            "mission": "MGS",
+            "instrument": "MOLA",
+            "product": "MEGDR",
+            "sourceUrl": "https://astrogeology.usgs.gov/search/map/Mars/GlobalSurveyor/MOLA/Mars_MGS_MOLA_DEM_mosaic_global_463m",
+            "processed": true,
+            "synthetic": false,
+            "verified": true
+          }
+        },
+        {
+          "path": "jezero-delta/hazard.json",
+          "schemaVersion": 1,
+          "provenance": {
+            "sourceFile": "dem.json",
+            "processed": true,
+            "synthetic": true,
+            "verified": false,
+            "note": "Hazard model: 0.4*(slope/20) + 0.4*(roughness/0.5) + 0.2*sand_risk (T-014)"
+          }
+        },
+        {
+          "path": "jezero-delta/roughness.json",
+          "schemaVersion": 1,
+          "provenance": {
+            "sourceFile": "dem.json",
+            "processed": true,
+            "synthetic": false,
+            "verified": true,
+            "note": "3x3 local elevation variance (T-013)"
+          }
+        },
+        {
+          "path": "jezero-delta/sand_risk.json",
+          "schemaVersion": 1,
+          "provenance": {
+            "sourceFile": "dem.json",
+            "processed": true,
+            "synthetic": true,
+            "verified": false,
+            "note": "Placeholder synthetic data (THEMIS TI missing) (T-013)"
+          }
+        },
+        {
+          "path": "jezero-delta/slope.json",
+          "schemaVersion": 1,
+          "provenance": {
+            "sourceFile": "dem.json",
+            "processed": true,
+            "synthetic": false,
+            "verified": true,
+            "note": "Derived from DEM via central differences (T-012)"
+          }
+        }
+      ]
     }
   ]
 }

@@ -17,7 +17,7 @@ Dates: today ~ Sep 25, 2026; hackathon **Nov 14-15, 2026** (verify). Work top-do
 - [x] T-012 Slope grid (match TS `slopeDegrees`; cross-check test)
 - [x] T-013 Roughness + thermal-inertia sand risk
 - [x] T-014 Hazard grid with documented weights
-- [ ] T-015 `04_build_manifest.py` + validation (provenance present, bbox valid)
+- [x] T-015 `04_build_manifest.py` + validation (provenance present, bbox valid)
 - [ ] T-016 Curate 3-5 science targets from real CRISM/geology info with rationale + sources
 - [ ] T-017 Conditions snapshot from MEDA (or REMS) with timestamp
 - [ ] T-018 Record each raw source file's version/fetch date + sha256 hash (e.g. `data/raw/{site}/SOURCES_LOCK.json`); copy into `sourceHash`/`fetchedAt` on the matching `Provenance` (NFR-05, ADR-017)

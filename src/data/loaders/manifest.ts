@@ -8,7 +8,15 @@ export interface SiteAssets {
 export interface Manifest {
   schemaVersion: number;
   generatedBy: string | null;
-  sites: { id: string; assets: SiteAssets }[];
+  sites: {
+    id: string;
+    assets: SiteAssets;
+    files?: {
+      path: string;
+      schemaVersion?: number;
+      provenance: any;
+    }[];
+  }[];
 }
 
 export async function loadManifest(): Promise<Manifest | null> {
