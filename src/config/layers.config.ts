@@ -2,7 +2,8 @@ import type { LayerDef, Provenance } from '@/types';
 
 /**
  * SINGLE registry of map layers. Add a layer here, nowhere else (AGENTS.md).
- * All tile URLs / product names are UNVERIFIED until T-001 in docs/TODO.md is done.
+ * Mars Trek tiles currently used here are WMTS-style (north-up row order); if a new source is added,
+ * re-check docs/DATA_SOURCES.md and set tms to match that service before enabling it.
  */
 const unverified = (p: Omit<Provenance, 'verified' | 'synthetic' | 'processed'> & Partial<Provenance>): Provenance => ({
   processed: false,
@@ -18,7 +19,7 @@ export const LAYERS: LayerDef[] = [
     group: 'base',
     kind: 'tile',
     tileUrl: import.meta.env.VITE_TILE_BASEMAP_URL || '',
-    tms: false, // UNVERIFIED like the URL: set to match the chosen source's tile scheme (T-001, ADR-016)
+    tms: false, // Mars Trek/WMTS tiles use north-up row order, so Leaflet must keep tms=false (ADR-016)
     defaultVisible: true,
     defaultOpacity: 1,
     provenance: unverified({
@@ -35,7 +36,7 @@ export const LAYERS: LayerDef[] = [
     group: 'terrain',
     kind: 'tile',
     tileUrl: import.meta.env.VITE_TILE_ELEVATION_URL || '',
-    tms: false, // Mars Trek WMTS is row-from-north (false); TMS sources need true (ADR-016)
+    tms: false, // Mars Trek WMTS uses north-up row order; TMS sources need true (ADR-016)
     defaultVisible: false,
     defaultOpacity: 0.6,
     provenance: unverified({
