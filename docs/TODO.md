@@ -13,7 +13,7 @@ Dates: today ~ Sep 25, 2026; hackathon **Nov 14-15, 2026** (verify). Work top-do
 ## Phase 1 - Data pipeline (weeks 2-3)
 
 - [x] T-010 Implement `01_fetch_data.py` for DEM, imagery/tiles, CRISM, THEMIS, traverse, MEDA
-- [ ] T-011 `02_make_dem_grid.py` on real DEM -> `dem.json` (with provenance)
+- [x] T-011 `02_make_dem_grid.py` on real DEM -> `dem.json` (with provenance)
 - [ ] T-012 Slope grid (match TS `slopeDegrees`; cross-check test)
 - [ ] T-013 Roughness + thermal-inertia sand risk
 - [ ] T-014 Hazard grid with documented weights
