@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "generatedBy": null,
+  "sites": [
+    {
+      "id": "jezero-delta",
+      "assets": { "dem": null, "slope": null, "traverse": null, "targets": null, "conditions": null }
+    }
+  ]
+}

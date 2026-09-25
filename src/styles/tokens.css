@@ -1,0 +1,17 @@
+/* Design tokens. Never hard-code colours/spacing in components - use these. See docs/SDD.md section 7. */
+:root {
+  --basalt-900: #141b25;
+  --basalt-800: #1c2532;
+  --basalt-700: #263244;
+  --basalt-500: #4a5a72;
+  --dust-100: #f1e6d9;
+  --dust-300: #cbb9a6;
+  --route: #5cc8d7; /* planned route */
+  --science: #e5a94d; /* science targets */
+  --hazard: #e0523f; /* hazards / blocked */
+  --ok: #6fbf8f;
+  --font-ui: 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
+  --font-data: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', monospace;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-6: 24px;
+  --radius: 6px;
+}
