@@ -22,6 +22,13 @@ button.active { background: var(--route); color: var(--basalt-900); border-color
 .route-goal-marker { stroke: var(--science); fill: var(--science); }
 .route-pick-notice { position: absolute; top: 8px; left: 56px; right: 8px; z-index: 1000; inset: auto; }
 .route-points { margin: var(--s-2) 0; }
+.route-stats { padding-left: 20px; }
+.elevation-profile { margin: var(--s-4) 0 0; }
+.elevation-profile figcaption { color: var(--dust-300); font-size: 12px; margin-bottom: var(--s-2); }
+.elevation-profile svg { display: block; width: 100%; max-width: 320px; height: auto; overflow: visible; }
+.elevation-profile-axis { stroke: var(--basalt-500); stroke-width: 1; }
+.elevation-profile-line { fill: none; stroke: var(--route); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.elevation-profile-label { fill: var(--dust-300); font-family: var(--font-data); font-size: 9px; }
 .science-target-marker { stroke: var(--science); fill: var(--science); }
 .mineralogy-marker { stroke: var(--ok); fill: var(--ok); }
 .grid-canvas-overlay { z-index: 200; }
