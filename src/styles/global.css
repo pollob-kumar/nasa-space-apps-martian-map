@@ -18,4 +18,18 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px s
 button.active { background: var(--route); color: var(--basalt-900); border-color: var(--route); }
 .layer-row { margin: var(--s-3) 0; }
 .inspect-marker { stroke: var(--route); fill: var(--route); }
+.map-coordinate-readout {
+  position: absolute;
+  right: var(--s-2);
+  bottom: var(--s-2);
+  z-index: 1000;
+  padding: var(--s-1) var(--s-2);
+  background: var(--basalt-800);
+  border: 1px solid var(--basalt-500);
+  border-radius: var(--radius);
+  color: var(--dust-100);
+  font-family: var(--font-data);
+  font-size: 12px;
+  pointer-events: none;
+}
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { LAYERS } from '@/config/layers.config';
@@ -12,6 +12,7 @@ export function MapView() {
   const map = useRef<L.Map | null>(null);
   const managed = useRef<L.Layer[]>([]);
   const marker = useRef<L.CircleMarker | null>(null);
+  const [hoveredLonLat, setHoveredLonLat] = useState<{ lon: number; lat: number } | null>(null);
   const { siteId, layerState, route, inspectedPoint } = useApp();
 
   useEffect(() => {
@@ -20,6 +21,8 @@ export function MapView() {
     L.control.scale({ metric: true, imperial: false }).addTo(map.current);
     // FR-06: a click selects the point for the inspector. getState() avoids a stale closure in this run-once effect.
     map.current.on('click', (e: L.LeafletMouseEvent) => useApp.getState().inspect({ lon: e.latlng.lng, lat: e.latlng.lat }));
+    map.current.on('mousemove', (e: L.LeafletMouseEvent) => setHoveredLonLat({ lon: e.latlng.lng, lat: e.latlng.lat }));
+    map.current.on('mouseout', () => setHoveredLonLat(null));
     return () => {
       map.current?.remove();
       map.current = null;
@@ -73,6 +76,9 @@ export function MapView() {
   return (
     <div>
       <div ref={el} style={{ position: 'absolute', inset: 0, background: 'var(--basalt-900)' }} />
+      <div className="map-coordinate-readout" aria-live="polite" aria-label="Map cursor coordinates">
+        {hoveredLonLat ? `Lon ${hoveredLonLat.lon.toFixed(5)}°E, Lat ${hoveredLonLat.lat.toFixed(5)}°` : 'Move over the map to read coordinates'}
+      </div>
       {missingTiles && (
         <div className="notice" style={{ position: 'absolute', top: 8, left: 56, right: 8, zIndex: 1000, inset: 'auto' }}>
           No tile URL configured for some layers. Set VITE_TILE_* in .env.local (see docs/DATA_SOURCES.md, task T-001).
