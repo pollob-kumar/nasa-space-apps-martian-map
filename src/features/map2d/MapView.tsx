@@ -3,7 +3,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { LAYERS } from '@/config/layers.config';
 import { SITES } from '@/config/sites.config';
-import { loadGeoJson } from '@/data/loaders/geojson';
+import { loadTargets, loadTraverse, loadVectorCollection } from '@/data/loaders/vectors';
 import { useApp } from '@/state/store';
 
 /** 2D layered map. Mars uses plain lon/lat (EPSG:4326-style) tiles, NOT web-mercator (ADR-004). */
@@ -52,22 +52,51 @@ export function MapView() {
       if (def.kind === 'tile' && def.tileUrl) {
         add(L.tileLayer(def.tileUrl, { tms: def.tms ?? false, opacity: st.opacity, attribution: `${def.provenance.mission} ${def.provenance.instrument}` }));
       } else if (def.kind === 'geojson' && def.dataPath) {
-        loadGeoJson(def.dataPath).then((fc) => {
-          if (!fc) return;
-          const color = def.id === 'rover-traverse' ? 'var(--route)' : 'var(--science)';
-          add(L.geoJSON(fc, {
-            style: { color, opacity: st.opacity, weight: def.id === 'rover-traverse' ? 3 : 1 },
-            pointToLayer: (_feature, latlng) =>
-              L.circleMarker(latlng, {
-                className: def.id === 'science-targets' ? 'science-target-marker' : 'mineralogy-marker',
-                color,
-                fillColor: color,
-                fillOpacity: 0.35,
-                radius: def.id === 'science-targets' ? 6 : 4,
-                weight: 2,
-              }),
-          }));
-        });
+        if (def.id === 'rover-traverse') {
+          loadTraverse(def.dataPath).then((points) => {
+            if (points?.length) {
+              add(L.polyline(points.map((p) => [p.lat, p.lon] as [number, number]), {
+                className: 'rover-traverse-line',
+                color: 'var(--route)',
+                opacity: st.opacity,
+                weight: 3,
+              }));
+            }
+          });
+        } else if (def.id === 'science-targets') {
+          loadTargets(def.dataPath).then((targets) => {
+            if (targets?.length) {
+              const markers = targets.map((target) =>
+                L.circleMarker([target.position.lat, target.position.lon], {
+                  className: 'science-target-marker',
+                  color: 'var(--science)',
+                  fillColor: 'var(--science)',
+                  fillOpacity: 0.35,
+                  opacity: st.opacity,
+                  radius: 6,
+                  weight: 2,
+                }).bindTooltip(target.name),
+              );
+              add(L.layerGroup(markers));
+            }
+          });
+        } else if (def.id === 'mineralogy') {
+          loadVectorCollection(def.dataPath).then((fc) => {
+            if (!fc) return;
+            add(L.geoJSON(fc, {
+              style: { color: 'var(--ok)', opacity: st.opacity, weight: 2 },
+              pointToLayer: (_feature, latlng) =>
+                L.circleMarker(latlng, {
+                  className: 'mineralogy-marker',
+                  color: 'var(--ok)',
+                  fillColor: 'var(--ok)',
+                  fillOpacity: 0.35,
+                  radius: 4,
+                  weight: 2,
+                }),
+            }));
+          });
+        }
       }
     }
     if (route) add(L.polyline(route.path.map((p) => [p.lat, p.lon] as [number, number]), { color: 'var(--route)', weight: 4 }));

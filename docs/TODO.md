@@ -26,7 +26,7 @@ Dates: today ~ Sep 25, 2026; hackathon **Nov 14-15, 2026** (verify). Work top-do
 
 - [ ] T-020 Basemap + elevation tiles render, including the pan/zoom scale bar and east-positive lon/lat hover readout (FR-01). Hover readout is implemented. Elevation URL responds with HTTP 200 JPEG/CORS, but is opt-in by default; basemap verification is blocked because `.env.local` has an empty `VITE_TILE_BASEMAP_URL`.
 - [x] T-021 Layer panel complete incl. per-layer legends (FR-02)
-- [ ] T-022 GeoJSON layers styled: traverse, targets, mineralogy (FR-03)
+- [ ] T-022 GeoJSON layers styled: traverse, targets, mineralogy (FR-03). Map wiring uses the strict vector loaders, but `public/data/jezero-delta/traverse.geojson` and `mineralogy.geojson` are not present in this checkout, so those layers remain no-data until their source files are supplied.
 - [ ] T-023 Grid layers (slope, hazard) rendered as canvas overlay
 - [ ] T-024 Integrated target panel: elevation/slope/mineral/rover/provenance (FR-06). _Scaffold exists (`features/inspector`, ADR-015): elevation, slope, nearest target, nearest traverse point for any clicked point. Still to do: run on real data files, mineralogy + terrain-unit lookup (point-in-polygon), show the DEM's own provenance, make selecting a target on the map set `selectedTargetId`._
 - [ ] T-025 Route UI: pick start/destination(s) on map (FR-04)

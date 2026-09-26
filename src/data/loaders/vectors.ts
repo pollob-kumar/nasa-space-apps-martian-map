@@ -115,3 +115,11 @@ export async function loadTraverse(path: string): Promise<LonLat[] | null> {
     return null;
   }
 }
+
+/** Load a validated vector collection for layers that retain their GeoJSON geometry for rendering. */
+export async function loadVectorCollection(path: string): Promise<FeatureCollection | null> {
+  const fc = await loadGeoJson(path);
+  if (!fc || fc.type !== 'FeatureCollection' || !Array.isArray(fc.features)) return null;
+  if (!fc.features.every((feature) => feature.type === 'Feature' && feature.geometry !== null)) return null;
+  return fc;
+}
