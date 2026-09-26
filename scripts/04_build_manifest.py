@@ -52,10 +52,11 @@ def main() -> None:
                 continue
                 
             # Validation pass
-            if "provenance" not in content:
+            if "provenance" not in content and "source" not in content:
                 print(f"ERROR: Missing provenance in {p.relative_to(PUBLIC_DATA)}")
                 has_errors = True
             
+            provenance_data = content.get("provenance") or content.get("source")
             if "bbox" in content:
                 if not validate_bbox(content["bbox"]):
                     print(f"ERROR: Invalid bbox in {p.relative_to(PUBLIC_DATA)}: {content['bbox']}")
@@ -64,7 +65,7 @@ def main() -> None:
             files_metadata.append({
                 "path": f"{sid}/{p.name}",
                 "schemaVersion": content.get("schemaVersion"),
-                "provenance": content.get("provenance")
+                "provenance": provenance_data
             })
             
         for k, fn in FILES.items():

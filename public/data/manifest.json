@@ -12,9 +12,22 @@
         "hazard": "jezero-delta/hazard.json",
         "traverse": null,
         "targets": "jezero-delta/targets.geojson",
-        "conditions": null
+        "conditions": "jezero-delta/conditions.json"
       },
       "files": [
+        {
+          "path": "jezero-delta/conditions.json",
+          "schemaVersion": null,
+          "provenance": {
+            "mission": "M2020",
+            "instrument": "MEDA",
+            "product": "Mars Weather Report (Sol 58)",
+            "sourceUrl": "https://mars.nasa.gov/mars2020/spacecraft/instruments/meda/",
+            "processed": false,
+            "synthetic": false,
+            "verified": true
+          }
+        },
         {
           "path": "jezero-delta/dem.json",
           "schemaVersion": 1,
