@@ -32,7 +32,7 @@ Dates: today ~ Sep 25, 2026; hackathon **Nov 14-15, 2026** (verify). Work top-do
 - [x] T-025 Route UI: pick start/destination(s) on map (FR-04)
 - [x] T-026 Route stats + elevation profile chart (FR-05). RoutePanel now shows distance, assumed walk time, max/average slope, elevation gain/loss, and a native SVG elevation profile.
 - [x] T-027 Conditions panel on real snapshot (FR-07). Loads `public/data/{site-id}/conditions.json` and shows latest available observation time, age, freshness category, and provenance.
-- [x] T-028 Marswalk plan + go/no-go checklist + assumptions list (FR-08). Uses route hazard exposure, conditions availability, EVA budget, and visible ADR-007 assumptions.
+- [x] T-028 Marswalk plan + go/no-go checklist + assumptions list (FR-08). `buildPlan` builds one overall verdict plus four items (EVA budget, slope limit, hazard exposure, latest-available conditions) from the route's hazard stats, the `costModel` profile and the conditions snapshot; the ordered stop list comes from `planStops` in the store (add/remove in the target panel); every assumption (speed, slope limit, EVA budget, hazard threshold, minutes per stop) is rendered in the panel with its source file/ADR. Known limits, not hidden: the routing hazard is still the slope placeholder (T-040) and `route.calibrated` makes the plan say so in the checklist and assumptions; stop-to-stop routing is a later step, so today's stop minutes are science time at each target and the walk time is the single start-to-destination leg.
 - [ ] T-029 Export plan JSON + print view (FR-12)
 
 ## Phase 3 - 3D and polish (weeks 5-6)

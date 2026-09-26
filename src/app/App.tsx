@@ -37,7 +37,7 @@ export function App() {
         <RoutePanel />
         <ScienceTargetPanel targets={targets ?? []} />
         <InspectorPanel />
-        <MarswalkPanel />
+        <MarswalkPanel targets={targets ?? []} />
       </aside>
     </div>
   );

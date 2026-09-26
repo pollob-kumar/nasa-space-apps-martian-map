@@ -116,6 +116,8 @@ export function RoutePanel() {
       hazardSegments: out.hazardSegments,
       estTimeMin: out.timeMin,
       profile,
+      // false = the hazard field above is the slope placeholder, not the derived hazard.json (T-040)
+      calibrated: false,
     });
   };
 

@@ -19,6 +19,8 @@ interface AppState {
   routeGoal: LonLat | null;
   routePickMode: 'start' | 'goal' | null;
   selectedTargetId: string | null;
+  /** ordered science stops for the Marswalk plan (FR-08); ids must match loaded science targets */
+  planStops: string[];
   /** point last clicked on the 2D map (FR-06 inspector); null = none */
   inspectedPoint: LonLat | null;
   setSite: (id: string) => void;
@@ -31,6 +33,7 @@ interface AppState {
   setRouteGoal: (p: LonLat | null) => void;
   setRoutePickMode: (mode: 'start' | 'goal' | null) => void;
   selectTarget: (id: string | null) => void;
+  setPlanStops: (ids: string[]) => void;
   inspect: (p: LonLat | null) => void;
 }
 
@@ -48,8 +51,9 @@ export const useApp = create<AppState>((set) => ({
   routeGoal: null,
   routePickMode: null,
   selectedTargetId: null,
+  planStops: [],
   inspectedPoint: null,
-  setSite: (siteId) => set({ siteId, route: null, routeStart: null, routeGoal: null, routePickMode: null, selectedTargetId: null, inspectedPoint: null }),
+  setSite: (siteId) => set({ siteId, route: null, routeStart: null, routeGoal: null, routePickMode: null, selectedTargetId: null, planStops: [], inspectedPoint: null }),
   setView: (view) => set({ view }),
   toggleLayer: (id) =>
     set((s) => ({ layerState: { ...s.layerState, [id]: { ...s.layerState[id]!, visible: !s.layerState[id]!.visible } } })),
@@ -61,5 +65,6 @@ export const useApp = create<AppState>((set) => ({
   setRouteGoal: (routeGoal) => set({ routeGoal, route: null }),
   setRoutePickMode: (routePickMode) => set({ routePickMode }),
   selectTarget: (selectedTargetId) => set({ selectedTargetId }),
+  setPlanStops: (planStops) => set({ planStops }),
   inspect: (inspectedPoint) => set({ inspectedPoint }),
 }));
