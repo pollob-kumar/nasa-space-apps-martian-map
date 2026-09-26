@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "siteId": "jezero-delta",
+  "files": {
+    "dem.tif": {
+      "sourceUrl": "https://astrogeology.usgs.gov/search/map/Mars/GlobalSurveyor/MOLA/Mars_MGS_MOLA_DEM_mosaic_global_463m",
+      "sourceVersion": "Mars_MGS_MOLA_DEM_mosaic_global_463m",
+      "fetchedAt": "2026-09-25T17:23:35.6971493Z",
+      "sha256": "08f878cd95ac2d37d69d1ce2a0fce0158c8868325ce0ccefb6d108080618739a"
+    }
+  }
+}
