@@ -18,6 +18,10 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px s
 button.active { background: var(--route); color: var(--basalt-900); border-color: var(--route); }
 .layer-row { margin: var(--s-3) 0; }
 .inspect-marker { stroke: var(--route); fill: var(--route); }
+.route-start-marker { stroke: var(--ok); fill: var(--ok); }
+.route-goal-marker { stroke: var(--science); fill: var(--science); }
+.route-pick-notice { position: absolute; top: 8px; left: 56px; right: 8px; z-index: 1000; inset: auto; }
+.route-points { margin: var(--s-2) 0; }
 .science-target-marker { stroke: var(--science); fill: var(--science); }
 .mineralogy-marker { stroke: var(--ok); fill: var(--ok); }
 .grid-canvas-overlay { z-index: 200; }

@@ -15,6 +15,9 @@ interface AppState {
   layerState: Record<string, LayerState>;
   profile: RouteProfile['id'];
   route: RouteResult | null;
+  routeStart: LonLat | null;
+  routeGoal: LonLat | null;
+  routePickMode: 'start' | 'goal' | null;
   selectedTargetId: string | null;
   /** point last clicked on the 2D map (FR-06 inspector); null = none */
   inspectedPoint: LonLat | null;
@@ -24,6 +27,9 @@ interface AppState {
   setOpacity: (id: string, o: number) => void;
   setProfile: (p: RouteProfile['id']) => void;
   setRoute: (r: RouteResult | null) => void;
+  setRouteStart: (p: LonLat | null) => void;
+  setRouteGoal: (p: LonLat | null) => void;
+  setRoutePickMode: (mode: 'start' | 'goal' | null) => void;
   selectTarget: (id: string | null) => void;
   inspect: (p: LonLat | null) => void;
 }
@@ -38,9 +44,12 @@ export const useApp = create<AppState>((set) => ({
   layerState: initialLayers,
   profile: 'science',
   route: null,
+  routeStart: null,
+  routeGoal: null,
+  routePickMode: null,
   selectedTargetId: null,
   inspectedPoint: null,
-  setSite: (siteId) => set({ siteId, route: null, selectedTargetId: null, inspectedPoint: null }),
+  setSite: (siteId) => set({ siteId, route: null, routeStart: null, routeGoal: null, routePickMode: null, selectedTargetId: null, inspectedPoint: null }),
   setView: (view) => set({ view }),
   toggleLayer: (id) =>
     set((s) => ({ layerState: { ...s.layerState, [id]: { ...s.layerState[id]!, visible: !s.layerState[id]!.visible } } })),
@@ -48,6 +57,9 @@ export const useApp = create<AppState>((set) => ({
     set((s) => ({ layerState: { ...s.layerState, [id]: { ...s.layerState[id]!, opacity } } })),
   setProfile: (profile) => set({ profile }),
   setRoute: (route) => set({ route }),
+  setRouteStart: (routeStart) => set({ routeStart, route: null }),
+  setRouteGoal: (routeGoal) => set({ routeGoal, route: null }),
+  setRoutePickMode: (routePickMode) => set({ routePickMode }),
   selectTarget: (selectedTargetId) => set({ selectedTargetId }),
   inspect: (inspectedPoint) => set({ inspectedPoint }),
 }));

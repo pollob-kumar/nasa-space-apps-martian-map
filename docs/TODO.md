@@ -29,7 +29,7 @@ Dates: today ~ Sep 25, 2026; hackathon **Nov 14-15, 2026** (verify). Work top-do
 - [ ] T-022 GeoJSON layers styled: traverse, targets, mineralogy (FR-03). Map wiring uses the strict vector loaders, but `public/data/jezero-delta/traverse.geojson` and `mineralogy.geojson` are not present in this checkout, so those layers remain no-data until their source files are supplied.
 - [x] T-023 Grid layers (slope, hazard) rendered as bbox-aligned canvas overlays
 - [x] T-024 Integrated target panel: elevation/slope/mineral/rover/provenance (FR-06). Uses real DEM provenance, target/traverse/mineralogy loaders, point-in-polygon lookup, and target selection state. Missing source files remain explicit no-data states.
-- [ ] T-025 Route UI: pick start/destination(s) on map (FR-04)
+- [x] T-025 Route UI: pick start/destination(s) on map (FR-04)
 - [ ] T-026 Route stats + elevation profile chart (FR-05)
 - [ ] T-027 Conditions panel on real snapshot (FR-07)
 - [ ] T-028 Marswalk plan + go/no-go checklist + assumptions list (FR-08)

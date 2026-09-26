@@ -15,14 +15,25 @@ export function MapView() {
   const managed = useRef<L.Layer[]>([]);
   const marker = useRef<L.CircleMarker | null>(null);
   const [hoveredLonLat, setHoveredLonLat] = useState<{ lon: number; lat: number } | null>(null);
-  const { siteId, layerState, route, inspectedPoint } = useApp();
+  const { siteId, layerState, route, inspectedPoint, routeStart, routeGoal, routePickMode } = useApp();
 
   useEffect(() => {
     if (!el.current || map.current) return;
     map.current = L.map(el.current, { crs: L.CRS.EPSG4326, zoomControl: true, attributionControl: true });
     L.control.scale({ metric: true, imperial: false }).addTo(map.current);
-    // FR-06: a click selects the point for the inspector. getState() avoids a stale closure in this run-once effect.
-    map.current.on('click', (e: L.LeafletMouseEvent) => useApp.getState().inspect({ lon: e.latlng.lng, lat: e.latlng.lat }));
+    // One click feeds both the inspector and the active route endpoint.
+    map.current.on('click', (e: L.LeafletMouseEvent) => {
+      const point = { lon: e.latlng.lng, lat: e.latlng.lat };
+      const state = useApp.getState();
+      state.inspect(point);
+      if (state.routePickMode === 'start') {
+        state.setRouteStart(point);
+        state.setRoutePickMode(null);
+      } else if (state.routePickMode === 'goal') {
+        state.setRouteGoal(point);
+        state.setRoutePickMode(null);
+      }
+    });
     map.current.on('mousemove', (e: L.LeafletMouseEvent) => setHoveredLonLat({ lon: e.latlng.lng, lat: e.latlng.lat }));
     map.current.on('mouseout', () => setHoveredLonLat(null));
     return () => {
@@ -122,6 +133,15 @@ export function MapView() {
     }
   }, [inspectedPoint]);
 
+  useEffect(() => {
+    const m = map.current;
+    if (!m) return;
+    const layers: L.Layer[] = [];
+    if (routeStart) layers.push(L.circleMarker([routeStart.lat, routeStart.lon], { radius: 7, className: 'route-start-marker' }).addTo(m));
+    if (routeGoal) layers.push(L.circleMarker([routeGoal.lat, routeGoal.lon], { radius: 7, className: 'route-goal-marker' }).addTo(m));
+    return () => layers.forEach((layer) => layer.remove());
+  }, [routeStart, routeGoal]);
+
   const missingTiles = LAYERS.some((l) => l.kind === 'tile' && !l.tileUrl);
   return (
     <div>
@@ -129,6 +149,7 @@ export function MapView() {
       <div className="map-coordinate-readout" aria-live="polite" aria-label="Map cursor coordinates">
         {hoveredLonLat ? `Lon ${hoveredLonLat.lon.toFixed(5)}°E, Lat ${hoveredLonLat.lat.toFixed(5)}°` : 'Move over the map to read coordinates'}
       </div>
+      {routePickMode && <div className="notice route-pick-notice">Click the map to set the {routePickMode === 'start' ? 'start' : 'destination'} point.</div>}
       {missingTiles && (
         <div className="notice" style={{ position: 'absolute', top: 8, left: 56, right: 8, zIndex: 1000, inset: 'auto' }}>
           No tile URL configured for some layers. Set VITE_TILE_* in .env.local (see docs/DATA_SOURCES.md, task T-001).
