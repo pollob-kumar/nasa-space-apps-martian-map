@@ -11,7 +11,7 @@
         "sand_risk": "jezero-delta/sand_risk.json",
         "hazard": "jezero-delta/hazard.json",
         "traverse": null,
-        "targets": null,
+        "targets": "jezero-delta/targets.geojson",
         "conditions": null
       },
       "files": [
@@ -70,6 +70,19 @@
             "synthetic": false,
             "verified": true,
             "note": "Derived from DEM via central differences (T-012)"
+          }
+        },
+        {
+          "path": "jezero-delta/targets.geojson",
+          "schemaVersion": null,
+          "provenance": {
+            "mission": "MRO",
+            "instrument": "CRISM",
+            "product": "Mineralogy map",
+            "sourceUrl": "https://doi.org/10.1016/j.icarus.2019.113526",
+            "processed": false,
+            "synthetic": false,
+            "verified": true
           }
         }
       ]

@@ -1,0 +1,102 @@
+{
+  "type": "FeatureCollection",
+  "provenance": {
+    "mission": "MRO",
+    "instrument": "CRISM",
+    "product": "Mineralogy map",
+    "sourceUrl": "https://doi.org/10.1016/j.icarus.2019.113526",
+    "processed": false,
+    "synthetic": false,
+    "verified": true
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [77.4339, 18.4236] },
+      "properties": {
+        "id": "target-kodiak",
+        "name": "Kodiak Butte",
+        "kind": "delta",
+        "scienceValue": 0.8,
+        "rationale": "Isolated erosional remnant of the western river delta preserving stratigraphy of deltaic deposition.",
+        "provenance": [
+          {
+            "mission": "MRO",
+            "instrument": "CRISM",
+            "product": "Mineralogy map",
+            "sourceUrl": "https://doi.org/10.1016/j.icarus.2019.113526",
+            "processed": false,
+            "synthetic": false,
+            "verified": true
+          }
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [77.455, 18.425] },
+      "properties": {
+        "id": "target-seitah",
+        "name": "Séítah Formation",
+        "kind": "igneous",
+        "scienceValue": 0.9,
+        "rationale": "Olivine-rich, coarsely crystalline igneous rock unit on the crater floor offering insights into early volcanic activity.",
+        "provenance": [
+          {
+            "mission": "MRO",
+            "instrument": "CRISM",
+            "product": "Mineralogy map",
+            "sourceUrl": "https://doi.org/10.1016/j.icarus.2019.113526",
+            "processed": false,
+            "synthetic": false,
+            "verified": true
+          }
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [77.41, 18.46] },
+      "properties": {
+        "id": "target-delta-front",
+        "name": "Western Delta Front",
+        "kind": "clay",
+        "scienceValue": 1.0,
+        "rationale": "Bottomset and foreset deposits containing Fe/Mg smectites indicative of prolonged aqueous alteration.",
+        "provenance": [
+          {
+            "mission": "MRO",
+            "instrument": "CRISM",
+            "product": "Mineralogy map",
+            "sourceUrl": "https://doi.org/10.1016/j.icarus.2019.113526",
+            "processed": false,
+            "synthetic": false,
+            "verified": true
+          }
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [77.35, 18.48] },
+      "properties": {
+        "id": "target-marginal-carbonates",
+        "name": "Inner Margin Carbonates",
+        "kind": "carbonate",
+        "scienceValue": 0.95,
+        "rationale": "Carbonate-bearing deposits along the inner crater margin potentially preserving biosignatures from an ancient alkaline lake.",
+        "provenance": [
+          {
+            "mission": "MRO",
+            "instrument": "CRISM",
+            "product": "Mineralogy map",
+            "sourceUrl": "https://doi.org/10.1016/j.icarus.2019.113526",
+            "processed": false,
+            "synthetic": false,
+            "verified": true
+          }
+        ]
+      }
+    }
+  ]
+}
