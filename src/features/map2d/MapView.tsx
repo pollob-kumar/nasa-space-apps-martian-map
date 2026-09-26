@@ -52,10 +52,25 @@ export function MapView() {
       if (def.kind === 'tile' && def.tileUrl) {
         add(L.tileLayer(def.tileUrl, { tms: def.tms ?? false, opacity: st.opacity, attribution: `${def.provenance.mission} ${def.provenance.instrument}` }));
       } else if (def.kind === 'geojson' && def.dataPath) {
-        loadGeoJson(def.dataPath).then((fc) => fc && add(L.geoJSON(fc, { style: { opacity: st.opacity } })));
+        loadGeoJson(def.dataPath).then((fc) => {
+          if (!fc) return;
+          const color = def.id === 'rover-traverse' ? 'var(--route)' : 'var(--science)';
+          add(L.geoJSON(fc, {
+            style: { color, opacity: st.opacity, weight: def.id === 'rover-traverse' ? 3 : 1 },
+            pointToLayer: (_feature, latlng) =>
+              L.circleMarker(latlng, {
+                className: def.id === 'science-targets' ? 'science-target-marker' : 'mineralogy-marker',
+                color,
+                fillColor: color,
+                fillOpacity: 0.35,
+                radius: def.id === 'science-targets' ? 6 : 4,
+                weight: 2,
+              }),
+          }));
+        });
       }
     }
-    if (route) add(L.polyline(route.path.map((p) => [p.lat, p.lon] as [number, number]), { color: '#5cc8d7', weight: 4 }));
+    if (route) add(L.polyline(route.path.map((p) => [p.lat, p.lon] as [number, number]), { color: 'var(--route)', weight: 4 }));
     return () => {
       alive = false;
     };
