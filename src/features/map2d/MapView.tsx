@@ -3,7 +3,9 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { LAYERS } from '@/config/layers.config';
 import { SITES } from '@/config/sites.config';
+import { loadGrid } from '@/data/loaders/grid';
 import { loadTargets, loadTraverse, loadVectorCollection } from '@/data/loaders/vectors';
+import { GridCanvasOverlay } from './GridCanvasOverlay';
 import { useApp } from '@/state/store';
 
 /** 2D layered map. Mars uses plain lon/lat (EPSG:4326-style) tiles, NOT web-mercator (ADR-004). */
@@ -97,6 +99,10 @@ export function MapView() {
             }));
           });
         }
+      } else if (def.kind === 'grid' && def.dataPath && (def.id === 'slope' || def.id === 'hazards')) {
+        loadGrid(def.dataPath).then((grid) => {
+          if (grid) add(new GridCanvasOverlay(grid, def.id === 'slope' ? 'slope' : 'hazard', { opacity: st.opacity }));
+        });
       }
     }
     if (route) add(L.polyline(route.path.map((p) => [p.lat, p.lon] as [number, number]), { color: 'var(--route)', weight: 4 }));

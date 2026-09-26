@@ -20,6 +20,7 @@ button.active { background: var(--route); color: var(--basalt-900); border-color
 .inspect-marker { stroke: var(--route); fill: var(--route); }
 .science-target-marker { stroke: var(--science); fill: var(--science); }
 .mineralogy-marker { stroke: var(--ok); fill: var(--ok); }
+.grid-canvas-overlay { z-index: 200; }
 .layer-legend { display: flex; align-items: center; gap: var(--s-2); margin: var(--s-2) 0; color: var(--dust-300); font-size: 12px; }
 .layer-legend-symbol { display: block; flex: 0 0 28px; height: 10px; border: 1px solid var(--basalt-500); border-radius: 3px; }
 .layer-legend-raster .layer-legend-symbol { background: linear-gradient(90deg, var(--basalt-500), var(--dust-300)); }
