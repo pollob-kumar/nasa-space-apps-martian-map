@@ -8,12 +8,14 @@ import { MarswalkPanel } from '@/features/marswalk/MarswalkPanel';
 import { RoutePanel } from '@/features/routing/RoutePanel';
 import { ScienceTargetPanel } from '@/features/science/ScienceTargetPanel';
 import { useApp } from '@/state/store';
+import { useSiteVectors } from '@/hooks/useSiteVectors';
 
 // 3D is code-split so the 2D planning view loads fast (three.js is large).
 const TerrainScene = lazy(() => import('@/features/view3d/TerrainScene').then((m) => ({ default: m.TerrainScene })));
 
 export function App() {
   const { siteId, setSite, view, setView } = useApp();
+  const { targets } = useSiteVectors();
   return (
     <div className="shell">
       <header className="topbar">
@@ -33,7 +35,7 @@ export function App() {
       <aside className="panel">
         <ConditionsPanel />
         <RoutePanel />
-        <ScienceTargetPanel targets={[]} />
+        <ScienceTargetPanel targets={targets ?? []} />
         <InspectorPanel />
         <MarswalkPanel />
       </aside>

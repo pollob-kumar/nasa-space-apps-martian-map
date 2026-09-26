@@ -77,7 +77,7 @@ export function MapView() {
                   opacity: st.opacity,
                   radius: 6,
                   weight: 2,
-                }).bindTooltip(target.name),
+                }).bindTooltip(target.name).on('click', () => useApp.getState().selectTarget(target.id)),
               );
               add(L.layerGroup(markers));
             }

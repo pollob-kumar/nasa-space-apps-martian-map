@@ -1,4 +1,4 @@
-import type { Feature, FeatureCollection, Geometry } from 'geojson';
+import type { Feature, FeatureCollection, Geometry, MultiPolygon, Polygon } from 'geojson';
 import type { LonLat, Provenance, ScienceTarget } from '@/types';
 import { loadGeoJson } from './geojson';
 
@@ -123,3 +123,15 @@ export async function loadVectorCollection(path: string): Promise<FeatureCollect
   if (!fc.features.every((feature) => feature.type === 'Feature' && feature.geometry !== null)) return null;
   return fc;
 }
+
+/** Mineralogy regions retain their polygon geometry and source properties for point inspection. */
+export async function loadMineralogy(path: string): Promise<FeatureCollection | null> {
+  const fc = await loadVectorCollection(path);
+  if (!fc) return null;
+  return fc.features.every((feature) => {
+    const type = feature.geometry?.type;
+    return type === 'Polygon' || type === 'MultiPolygon';
+  }) ? fc : null;
+}
+
+export type MineralogyGeometry = Polygon | MultiPolygon;

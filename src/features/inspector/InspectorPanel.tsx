@@ -13,11 +13,11 @@ export function InspectorPanel() {
   const siteId = useApp((s) => s.siteId);
   const point = useApp((s) => s.inspectedPoint);
   const { grid, synthetic } = useTerrainGrid(siteId);
-  const { targets, roverPoints } = useSiteVectors();
+  const { targets, roverPoints, mineralogy } = useSiteVectors();
   const slope = useMemo(() => (grid ? slopeDegrees(grid) : null), [grid]);
   const summary = useMemo(
-    () => (point ? summarizeLocation({ point, grid, slopeDeg: slope, targets, roverPoints }) : null),
-    [point, grid, slope, targets, roverPoints],
+    () => (point ? summarizeLocation({ point, grid, slopeDeg: slope, targets, roverPoints, mineralogy }) : null),
+    [point, grid, slope, targets, roverPoints, mineralogy],
   );
 
   if (!point || !summary) {
@@ -45,11 +45,13 @@ export function InspectorPanel() {
             <div className="notice">
               <span className="badge warn">SYNTHETIC</span> Terrain below is placeholder data, not Mars.
             </div>
-          ) : (
+          ) : grid?.provenance ? (
             <div className="notice">
-              DEM provenance is stored in dem.json; showing it here is still to do (docs/TODO.md T-024). Slope is derived in the browser from that DEM.
+              <strong>DEM provenance</strong>
+              <ProvenanceBadge p={grid.provenance} />
+              <span>Slope is derived in the browser from this DEM.</span>
             </div>
-          )}
+          ) : null}
           <ul className="data">
             <li>Elevation {summary.elevationM === null ? 'no data' : `${summary.elevationM.toFixed(1)} m`}</li>
             <li>Slope {summary.slopeDeg === null ? 'no data' : `${summary.slopeDeg.toFixed(1)} deg`}</li>
@@ -82,7 +84,19 @@ export function InspectorPanel() {
         <p className="data">Nearest recorded traverse point {fmtDist(summary.nearestRoverPointM)}</p>
       )}
 
-      <div className="notice">Mineralogy and terrain unit: not looked up by point yet (docs/TODO.md T-024).</div>
+      {mineralogy === null ? (
+        <div className="notice">Mineralogy and terrain unit: no data file loaded.</div>
+      ) : !summary.mineralogy ? (
+        <div className="notice">Mineralogy and terrain unit: no polygon covers this point.</div>
+      ) : (
+        <div className="notice">
+          <div>Terrain unit: {summary.terrainUnit ?? 'no data'}</div>
+          <div>Mineralogy: {Object.entries(summary.mineralogy)
+            .filter(([key]) => key !== 'terrainUnit' && key !== 'terrain_unit')
+            .map(([key, value]) => `${key}: ${String(value)}`)
+            .join(', ') || 'no data'}</div>
+        </div>
+      )}
     </section>
   );
 }

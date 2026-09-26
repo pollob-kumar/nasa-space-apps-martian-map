@@ -1,5 +1,6 @@
 import { haversineM } from '@/lib/geo/haversine';
 import { lonLatToCell, type Grid } from '@/lib/geo/grid';
+import type { FeatureCollection, MultiPolygon, Polygon } from 'geojson';
 import type { LonLat, ScienceTarget } from '@/types';
 
 /**
@@ -28,6 +29,8 @@ export interface LocationSummary {
   nearestTarget: NearestTarget | null;
   /** metres to the nearest recorded traverse point (vertex), NOT to the line between vertices */
   nearestRoverPointM: number | null;
+  mineralogy: Record<string, unknown> | null;
+  terrainUnit: string | null;
 }
 
 export interface SummaryInput {
@@ -37,6 +40,7 @@ export interface SummaryInput {
   slopeDeg: Float32Array | null;
   targets: ScienceTarget[] | null;
   roverPoints: LonLat[] | null;
+  mineralogy: FeatureCollection | null;
 }
 
 export function isInsideGrid(g: Grid, p: LonLat): boolean {
@@ -48,8 +52,46 @@ function finiteOrNull(v: number | undefined): number | null {
   return v !== undefined && Number.isFinite(v) ? v : null;
 }
 
+function pointOnSegment(point: LonLat, a: readonly number[], b: readonly number[]): boolean {
+  const cross = (point.lon - a[0]!) * (b[1]! - a[1]!) - (point.lat - a[1]!) * (b[0]! - a[0]!);
+  if (Math.abs(cross) > 1e-10) return false;
+  return point.lon >= Math.min(a[0]!, b[0]!) && point.lon <= Math.max(a[0]!, b[0]!) &&
+    point.lat >= Math.min(a[1]!, b[1]!) && point.lat <= Math.max(a[1]!, b[1]!);
+}
+
+export function pointInPolygon(point: LonLat, rings: readonly (readonly (readonly number[])[])[]): boolean {
+  let inside = false;
+  for (const ring of rings) {
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const a = ring[i]!;
+      const b = ring[j]!;
+      if (pointOnSegment(point, a, b)) return true;
+      const intersects = (a[1]! > point.lat) !== (b[1]! > point.lat) &&
+        point.lon < ((b[0]! - a[0]!) * (point.lat - a[1]!)) / (b[1]! - a[1]!) + a[0]!;
+      if (intersects) inside = !inside;
+    }
+  }
+  return inside;
+}
+
+function featureContainsPoint(point: LonLat, geometry: Polygon | MultiPolygon): boolean {
+  if (geometry.type === 'Polygon') return pointInPolygon(point, geometry.coordinates);
+  return geometry.coordinates.some((polygon) => pointInPolygon(point, polygon));
+}
+
+function mineralogyAtPoint(point: LonLat, collection: FeatureCollection | null): Record<string, unknown> | null {
+  for (const feature of collection?.features ?? []) {
+    const geometry = feature.geometry;
+    if (geometry?.type !== 'Polygon' && geometry?.type !== 'MultiPolygon') continue;
+    if (featureContainsPoint(point, geometry)) {
+      return feature.properties && typeof feature.properties === 'object' ? feature.properties : {};
+    }
+  }
+  return null;
+}
+
 export function summarizeLocation(inp: SummaryInput): LocationSummary {
-  const { point, grid, slopeDeg, targets, roverPoints } = inp;
+  const { point, grid, slopeDeg, targets, roverPoints, mineralogy } = inp;
 
   let insideGrid = false;
   let elevationM: number | null = null;
@@ -74,5 +116,17 @@ export function summarizeLocation(inp: SummaryInput): LocationSummary {
     if (nearestRoverPointM === null || d < nearestRoverPointM) nearestRoverPointM = d;
   }
 
-  return { point, insideGrid, elevationM, slopeDeg: slope, nearestTarget, nearestRoverPointM };
+  const mineralogyProperties = mineralogyAtPoint(point, mineralogy);
+  const terrainUnitValue = mineralogyProperties?.terrainUnit ?? mineralogyProperties?.terrain_unit;
+  const terrainUnit = typeof terrainUnitValue === 'string' ? terrainUnitValue : null;
+  return {
+    point,
+    insideGrid,
+    elevationM,
+    slopeDeg: slope,
+    nearestTarget,
+    nearestRoverPointM,
+    mineralogy: mineralogyProperties,
+    terrainUnit,
+  };
 }
