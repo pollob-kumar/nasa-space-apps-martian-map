@@ -88,6 +88,9 @@ export interface RouteResult {
   distanceM: number;
   elevationsM: number[];
   maxSlopeDeg: number;
+  averageHazard01: number;
+  maxHazard01: number;
+  hazardSegments: number;
   estTimeMin: number;
   profile: 'fastest' | 'safest' | 'science';
 }

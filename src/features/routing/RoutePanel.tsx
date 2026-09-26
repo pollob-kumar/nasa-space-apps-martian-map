@@ -111,6 +111,9 @@ export function RoutePanel() {
       elevationsM: out.cells.map((c) => grid.data[c.y * grid.width + c.x]!),
       distanceM: out.distanceM,
       maxSlopeDeg: out.maxSlopeDeg,
+      averageHazard01: out.averageHazard01,
+      maxHazard01: out.maxHazard01,
+      hazardSegments: out.hazardSegments,
       estTimeMin: out.timeMin,
       profile,
     });

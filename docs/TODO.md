@@ -32,7 +32,7 @@ Dates: today ~ Sep 25, 2026; hackathon **Nov 14-15, 2026** (verify). Work top-do
 - [x] T-025 Route UI: pick start/destination(s) on map (FR-04)
 - [x] T-026 Route stats + elevation profile chart (FR-05). RoutePanel now shows distance, assumed walk time, max/average slope, elevation gain/loss, and a native SVG elevation profile.
 - [x] T-027 Conditions panel on real snapshot (FR-07). Loads `public/data/{site-id}/conditions.json` and shows latest available observation time, age, freshness category, and provenance.
-- [ ] T-028 Marswalk plan + go/no-go checklist + assumptions list (FR-08)
+- [x] T-028 Marswalk plan + go/no-go checklist + assumptions list (FR-08). Uses route hazard exposure, conditions availability, EVA budget, and visible ADR-007 assumptions.
 - [ ] T-029 Export plan JSON + print view (FR-12)
 
 ## Phase 3 - 3D and polish (weeks 5-6)
