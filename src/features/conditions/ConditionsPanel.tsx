@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useApp } from '@/state/store';
 import type { ConditionsSnapshot } from '@/types';
 import { ProvenanceBadge } from '@/features/provenance/ProvenanceBadge';
-import { freshness, loadConditions } from './conditionsService';
+import { freshness, loadConditions, observationAgeLabel } from './conditionsService';
 
 export function ConditionsPanel() {
   const siteId = useApp((s) => s.siteId);
@@ -15,12 +15,16 @@ export function ConditionsPanel() {
     <section aria-label="Conditions">
       <h2>Latest available conditions</h2>
       {!c ? (
-        <div className="notice">No conditions data loaded yet (public/data/{siteId}/conditions.json). Never show made-up values.</div>
+        <div className="notice">
+          No conditions data loaded yet (public/data/{siteId}/conditions.json). Never show made-up
+          values.
+        </div>
       ) : (
         <>
           <ProvenanceBadge p={c.source} />
           <p className="data">
-            Observed {c.observedAt} {c.sol !== undefined && `(sol ${c.sol})`} - {freshness(c)}
+            Observed {c.observedAt} {c.sol !== undefined && `(sol ${c.sol})`} - age{' '}
+            {observationAgeLabel(c)} - {freshness(c)}
           </p>
           <ul className="data">
             {c.airTempC !== undefined && <li>Air {c.airTempC} C</li>}

@@ -146,7 +146,7 @@ export function MapView() {
   return (
     <div>
       <div ref={el} style={{ position: 'absolute', inset: 0, background: 'var(--basalt-900)' }} />
-      <div className="map-coordinate-readout" aria-live="polite" aria-label="Map cursor coordinates">
+      <div className="map-coordinate-readout" role="status" aria-label="Map cursor coordinates">
         {hoveredLonLat ? `Lon ${hoveredLonLat.lon.toFixed(5)}°E, Lat ${hoveredLonLat.lat.toFixed(5)}°` : 'Move over the map to read coordinates'}
       </div>
       {routePickMode && <div className="notice route-pick-notice">Click the map to set the {routePickMode === 'start' ? 'start' : 'destination'} point.</div>}

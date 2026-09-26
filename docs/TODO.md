@@ -31,7 +31,7 @@ Dates: today ~ Sep 25, 2026; hackathon **Nov 14-15, 2026** (verify). Work top-do
 - [x] T-024 Integrated target panel: elevation/slope/mineral/rover/provenance (FR-06). Uses real DEM provenance, target/traverse/mineralogy loaders, point-in-polygon lookup, and target selection state. Missing source files remain explicit no-data states.
 - [x] T-025 Route UI: pick start/destination(s) on map (FR-04)
 - [x] T-026 Route stats + elevation profile chart (FR-05). RoutePanel now shows distance, assumed walk time, max/average slope, elevation gain/loss, and a native SVG elevation profile.
-- [ ] T-027 Conditions panel on real snapshot (FR-07)
+- [x] T-027 Conditions panel on real snapshot (FR-07). Loads `public/data/{site-id}/conditions.json` and shows latest available observation time, age, freshness category, and provenance.
 - [ ] T-028 Marswalk plan + go/no-go checklist + assumptions list (FR-08)
 - [ ] T-029 Export plan JSON + print view (FR-12)
 
