@@ -17,10 +17,20 @@ export interface PlannerOutput {
   distanceM: number;
   timeMin: number;
   maxSlopeDeg: number;
+  averageHazard01: number;
+  maxHazard01: number;
+  hazardSegments: number;
 }
 
 const NEIGHBOURS = [
-  [1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1],
+  [1, 0],
+  [-1, 0],
+  [0, 1],
+  [0, -1],
+  [1, 1],
+  [1, -1],
+  [-1, 1],
+  [-1, -1],
 ] as const;
 
 /** 8-connected A* over the grid. Returns null if the goal is unreachable under the profile limits. */
@@ -31,7 +41,8 @@ export function planRoute(inp: PlannerInput): PlannerOutput | null {
   const idx = (x: number, y: number) => y * w + x;
   const startI = idx(inp.start.x, inp.start.y);
   const goalI = idx(inp.goal.x, inp.goal.y);
-  const heuristic = (x: number, y: number) => 0.2 * Math.hypot((x - inp.goal.x) * dx, (y - inp.goal.y) * dy);
+  const heuristic = (x: number, y: number) =>
+    0.2 * Math.hypot((x - inp.goal.x) * dx, (y - inp.goal.y) * dy);
 
   const gScore = new Float64Array(w * h).fill(Infinity);
   const prev = new Int32Array(w * h).fill(-1);
@@ -69,6 +80,9 @@ export function planRoute(inp: PlannerInput): PlannerOutput | null {
   let distanceM = 0;
   let timeS = 0;
   let maxSlope = 0;
+  let hazardTotal = 0;
+  let maxHazard = 0;
+  let hazardSegments = 0;
   for (let i = 1; i < cells.length; i++) {
     const a = cells[i - 1]!;
     const b = cells[i]!;
@@ -76,9 +90,21 @@ export function planRoute(inp: PlannerInput): PlannerOutput | null {
     const dz = g.data[idx(b.x, b.y)]! - g.data[idx(a.x, a.y)]!;
     const seg = Math.hypot(horiz, dz);
     const slope = slopeDeg[idx(b.x, b.y)]!;
+    const segmentHazard = hazard[idx(b.x, b.y)]!;
     distanceM += seg;
     timeS += seg / speedMs(profile, slope);
     maxSlope = Math.max(maxSlope, slope);
+    hazardTotal += segmentHazard;
+    maxHazard = Math.max(maxHazard, segmentHazard);
+    if (segmentHazard > 0) hazardSegments++;
   }
-  return { cells, distanceM, timeMin: timeS / 60, maxSlopeDeg: maxSlope };
+  return {
+    cells,
+    distanceM,
+    timeMin: timeS / 60,
+    maxSlopeDeg: maxSlope,
+    averageHazard01: cells.length > 1 ? hazardTotal / (cells.length - 1) : 0,
+    maxHazard01: maxHazard,
+    hazardSegments,
+  };
 }

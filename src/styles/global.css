@@ -18,4 +18,42 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px s
 button.active { background: var(--route); color: var(--basalt-900); border-color: var(--route); }
 .layer-row { margin: var(--s-3) 0; }
 .inspect-marker { stroke: var(--route); fill: var(--route); }
+.route-start-marker { stroke: var(--ok); fill: var(--ok); }
+.route-goal-marker { stroke: var(--science); fill: var(--science); }
+.route-pick-notice { position: absolute; top: 8px; left: 56px; right: 8px; z-index: 1000; inset: auto; }
+.route-points { margin: var(--s-2) 0; }
+.route-stats { padding-left: 20px; }
+.elevation-profile { margin: var(--s-4) 0 0; }
+.elevation-profile figcaption { color: var(--dust-300); font-size: 12px; margin-bottom: var(--s-2); }
+.elevation-profile svg { display: block; width: 100%; max-width: 320px; height: auto; overflow: visible; }
+.elevation-profile-axis { stroke: var(--basalt-500); stroke-width: 1; }
+.elevation-profile-line { fill: none; stroke: var(--route); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.elevation-profile-label { fill: var(--dust-300); font-family: var(--font-data); font-size: 9px; }
+.science-target-marker { stroke: var(--science); fill: var(--science); }
+.mineralogy-marker { stroke: var(--ok); fill: var(--ok); }
+.grid-canvas-overlay { z-index: 200; }
+.layer-legend { display: flex; align-items: center; gap: var(--s-2); margin: var(--s-2) 0; color: var(--dust-300); font-size: 12px; }
+.layer-legend-symbol { display: block; flex: 0 0 28px; height: 10px; border: 1px solid var(--basalt-500); border-radius: 3px; }
+.layer-legend-raster .layer-legend-symbol { background: linear-gradient(90deg, var(--basalt-500), var(--dust-300)); }
+.layer-legend-line .layer-legend-symbol { height: 4px; border: 0; background: var(--route); }
+.layer-legend-point .layer-legend-symbol { flex-basis: 12px; width: 12px; height: 12px; border-radius: 50%; border-color: var(--science); background: var(--science); }
+.layer-legend-gradient .layer-legend-symbol { background: linear-gradient(90deg, var(--basalt-500), var(--science), var(--hazard)); }
+.layer-legend-pending .layer-legend-symbol { background: var(--basalt-700); border-style: dashed; }
+.layer-legend-label, .layer-legend-detail { display: block; }
+.layer-legend-label { color: var(--dust-100); }
+.layer-legend-detail { font-size: 11px; }
+.map-coordinate-readout {
+  position: absolute;
+  right: var(--s-2);
+  bottom: var(--s-2);
+  z-index: 1000;
+  padding: var(--s-1) var(--s-2);
+  background: var(--basalt-800);
+  border: 1px solid var(--basalt-500);
+  border-radius: var(--radius);
+  color: var(--dust-100);
+  font-family: var(--font-data);
+  font-size: 12px;
+  pointer-events: none;
+}
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }

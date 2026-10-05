@@ -1,0 +1,17 @@
+{
+  "siteId": "jezero-delta",
+  "source": {
+    "mission": "M2020",
+    "instrument": "MEDA",
+    "product": "Mars Weather Report (Sol 58)",
+    "sourceUrl": "https://mars.nasa.gov/mars2020/spacecraft/instruments/meda/",
+    "processed": false,
+    "synthetic": false,
+    "verified": true
+  },
+  "observedAt": "2021-04-19T12:33:00Z",
+  "sol": 58,
+  "airTempC": -22.0,
+  "pressurePa": 610,
+  "windMs": 6.0
+}

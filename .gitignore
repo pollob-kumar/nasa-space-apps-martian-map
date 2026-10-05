@@ -5,8 +5,12 @@ dist/
 data/raw/*
 data/interim/*
 !data/raw/.gitkeep
+!data/raw/*/
+data/raw/*/*
+!data/raw/*/SOURCES_LOCK.json
 !data/interim/.gitkeep
 __pycache__/
 .venv/
 *.log
 .DS_Store
+.vscode

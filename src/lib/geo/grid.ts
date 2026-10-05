@@ -1,5 +1,5 @@
 import { DEG2RAD, MARS } from '@/config/constants';
-import type { BBox, LonLat } from '@/types';
+import type { BBox, LonLat, Provenance } from '@/types';
 
 /** Regular lon/lat raster. Row 0 = NORTH edge. Values are row-major. */
 export interface Grid {
@@ -7,6 +7,7 @@ export interface Grid {
   height: number;
   bbox: BBox;
   data: Float32Array;
+  provenance?: Provenance;
 }
 
 export function cellSizeM(g: Grid): { dx: number; dy: number } {

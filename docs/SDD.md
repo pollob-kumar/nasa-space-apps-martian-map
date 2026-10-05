@@ -57,7 +57,7 @@ Central differences on the DEM with metric cell size (`cellSizeM`); `slope = ata
 ### 5.5 Time model
 `speed = base * max(0.3, 1 - slope/(2*maxSlope))`; time = sum(3D segment length / speed). **Assumption, not validated.**
 ### 5.6 Plan budget
-`total = 2 x walkTime + stops x minutesPerStop`; usable EVA = `maxEva * (1 - reserve%)`. Defaults 480 min / 25 % are placeholders (ADR-007).
+`total = 2 x walkTime + stops x minutesPerStop`; usable EVA = `maxEva * (1 - reserve%)`. Defaults 480 min / 25 % are placeholders (ADR-007). Stops are ordered by `planStops` in the store; the walk time is the single start-to-destination leg (stop-to-stop routing is not implemented), so each stop contributes science time only. The plan also reports one overall verdict (`pass` / `warning` / `no-go`) derived from the checklist, and states in the UI when `route.calibrated` is false (hazard from the slope placeholder, T-040).
 
 ### 5.7 Point inspection
 `summarizeLocation` (pure) takes the clicked point, the DEM grid + derived slope grid, the targets and the traverse vertices. Elevation and slope come from the cell under the point and only if the point is inside the grid bbox (never clamped to the edge); NaN cells are "no data". Nearest target and nearest traverse **vertex** use great-circle distance (a sparse traverse line is not interpolated, so the distance is to the recorded point, not to the line). Every absent input is reported as absent, not zero.

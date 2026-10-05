@@ -88,6 +88,14 @@ export interface RouteResult {
   distanceM: number;
   elevationsM: number[];
   maxSlopeDeg: number;
+  averageHazard01: number;
+  maxHazard01: number;
+  hazardSegments: number;
   estTimeMin: number;
   profile: 'fastest' | 'safest' | 'science';
+  /**
+   * false when the routing inputs were not fully from the real derived layers (e.g. hazard from the
+   * slope placeholder in RoutePanel, T-040). The plan UI must surface this, never hide it (ADR-008/018).
+   */
+  calibrated: boolean;
 }

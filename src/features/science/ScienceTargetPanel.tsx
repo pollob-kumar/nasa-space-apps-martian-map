@@ -5,7 +5,10 @@ import type { ScienceTarget } from '@/types';
 /** Integrated view: everything we know about ONE clicked target in one place. */
 export function ScienceTargetPanel({ targets }: { targets: ScienceTarget[] }) {
   const id = useApp((s) => s.selectedTargetId);
+  const planStops = useApp((s) => s.planStops);
+  const setPlanStops = useApp((s) => s.setPlanStops);
   const t = targets.find((x) => x.id === id);
+  const isStop = t !== undefined && planStops.includes(t.id);
   return (
     <section aria-label="Selected target">
       <h2>Selected target</h2>
@@ -21,6 +24,15 @@ export function ScienceTargetPanel({ targets }: { targets: ScienceTarget[] }) {
           {t.provenance.map((p) => (
             <ProvenanceBadge key={p.product} p={p} />
           ))}
+          <p>
+            {isStop ? (
+              <button onClick={() => setPlanStops(planStops.filter((sid) => sid !== t.id))}>
+                Remove from plan stops
+              </button>
+            ) : (
+              <button onClick={() => setPlanStops([...planStops, t.id])}>Add as plan stop</button>
+            )}
+          </p>
         </>
       )}
     </section>

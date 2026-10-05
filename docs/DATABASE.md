@@ -7,7 +7,8 @@ If a database is needed later (multi-user saved plans, big vector sets), use SQL
 ## 2. Storage layout
 | Location | Content | In git? |
 |---|---|---|
-| `data/raw/` | downloaded NASA/USGS products | no (large) |
+| `data/raw/` | downloaded NASA/USGS products | no (large), except per-site `SOURCES_LOCK.json` |
+| `data/raw/<site>/SOURCES_LOCK.json` | raw source versions/dates and SHA-256 hashes | yes |
 | `data/interim/` | temporary intermediates | no |
 | `public/data/manifest.json` | index of available assets per site | yes |
 | `public/data/<site>/dem.json` | elevation grid | yes if < ~5 MB, else Git LFS/release asset |

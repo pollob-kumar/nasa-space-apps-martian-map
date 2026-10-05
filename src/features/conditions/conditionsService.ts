@@ -3,7 +3,7 @@ import { ageHours } from '@/lib/units/time';
 
 /**
  * Loads the LATEST AVAILABLE conditions snapshot for a site from static data
- * (public/data/<site>/conditions.json). Mars data is never "live" - always show observedAt + age.
+ * (public/data/<site>/conditions.json). Always show observedAt and its age.
  */
 export async function loadConditions(siteId: string): Promise<ConditionsSnapshot | null> {
   try {
@@ -21,4 +21,13 @@ export function freshness(s: ConditionsSnapshot, now: Date = new Date()): Freshn
   if (h <= 24 * 7) return 'recent';
   if (h <= 24 * 365) return 'stale';
   return 'archival';
+}
+
+export function observationAgeLabel(s: ConditionsSnapshot, now: Date = new Date()): string {
+  const hours = Math.max(0, ageHours(s.observedAt, now));
+  if (hours < 1) return `${Math.round(hours * 60)} min`;
+  if (hours < 24) return `${hours.toFixed(1)} h`;
+  const days = hours / 24;
+  if (days < 365) return `${days.toFixed(1)} days`;
+  return `${(days / 365).toFixed(1)} years`;
 }
